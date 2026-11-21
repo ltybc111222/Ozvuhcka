@@ -250,9 +250,9 @@
    "folder": "bone_marshal",
    "file": "phase2",
    "when": "Стадия 2 «Бессмертные легионы»",
-   "ru": "Мои легио́ны не знают смерти. <short pause> Выстой… и докажи, что достоин пройти.",
-   "en": "My legions do not know death. <short pause> Hold out… and prove you are worthy to pass.",
-   "status": "утверждено",
+   "ru": "Под этой луно́й мой господин не знает поражений, <short pause> а мои легио́ны — смерти. <short pause> Выстой… и докажи, что достоин пройти.",
+   "en": "Under this moon my lord knows no defeat, <short pause> and my legions know no death. <short pause> Hold out… and prove you are worthy to pass.",
+   "status": "одобрено 21.11",
    "path_ru": "ch01/voice/bone_marshal/phase2.ru.ogg",
    "path_en": "ch01/voice/bone_marshal/phase2.ogg"
   },
@@ -277,6 +277,28 @@
    "status": "утверждено",
    "path_ru": "ch01/voice/bone_marshal/farewell.ru.ogg",
    "path_en": "ch01/voice/bone_marshal/farewell.ogg"
+  },
+  {
+   "who": "sam",
+   "folder": "bone_marshal",
+   "file": "hero_commando",
+   "when": "Послесловие после Маршала (игра за Сэма)",
+   "ru": "Мёртвый, а слово держит. <short pause> Не каждый живой так умеет.",
+   "en": "Dead, and still keeps his word. <short pause> Not every living man can say that.",
+   "status": "черновик",
+   "path_ru": "ch01/voice/bone_marshal/hero_commando.ru.ogg",
+   "path_en": "ch01/voice/bone_marshal/hero_commando.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "bone_marshal",
+   "file": "hero_vampire",
+   "when": "Послесловие после Маршала (игра за Корвина)",
+   "ru": "Чаща помнит. <long pause> Я тоже.",
+   "en": "The thicket remembers. <long pause> So do I.",
+   "status": "черновик",
+   "path_ru": "ch01/voice/bone_marshal/hero_vampire.ru.ogg",
+   "path_en": "ch01/voice/bone_marshal/hero_vampire.ogg"
   },
   {
    "who": "abbot",
