@@ -53,3 +53,4 @@ label { display: flex; flex-direction: column; gap: 4px; color: var(--mut); font
 .muted { color: var(--mut); } .small { font-size: 12px; } .mono { font-family: ui-monospace, monospace; }
 audio { height: 34px; }
 @media (max-width: 800px) { .body { flex-direction: column; } .side { width: auto; max-height: 40vh; border-right: 0; border-bottom: 1px solid var(--line); } .main { padding: 16px; } }
+.seg.mode { margin-top: 6px; width: fit-content; }

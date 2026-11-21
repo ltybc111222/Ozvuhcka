@@ -56,3 +56,8 @@ export const VOICES: [string, string][] = [
 ];
 
 export const takeKey = (l: ScriptLine, lang: Lang): TakeKey => `${l.folder}/${l.file}|${lang}`;
+
+/** Рассказ: один голос рассказчика, текст разбит на фрагменты (по запросу на каждый). */
+export type Fragment = { id: string; title: string; status: string; text: string };
+export type Narration = { title: string; narrator: CastMember; fragments: Fragment[] };
+export const fragKey = (f: Fragment): TakeKey => `story/${f.id}|ru`;

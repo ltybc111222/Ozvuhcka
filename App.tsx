@@ -5,6 +5,7 @@ import { VOICES, takeKey, type CastMember, type Lang, type ScriptLine, type Sett
 import { explain, synthesize } from './services/tts';
 import { dropTake, loadPref, loadTakes, savePref, saveTake } from './services/store';
 import { b64ToBytes, download, formatDuration, pcmToWav } from './utils/wav';
+import NarrationView from './Narration';
 
 const TAGS = ['<short pause>', '<long pause>', '<sigh>', '<exhales>'];
 const ACUTE = '́';
@@ -30,6 +31,7 @@ export default function App() {
   const [queue, setQueue] = useState<{ done: number; total: number } | null>(null);
   const abort = useRef<AbortController | null>(null);
   const [ready, setReady] = useState(false);
+  const [mode, setMode] = useState<'story' | 'lines'>('story');
 
   // Загрузка состояния из IndexedDB.
   useEffect(() => {
@@ -38,6 +40,8 @@ export default function App() {
         loadTakes(), loadPref<VoiceScript>('script'), loadPref<Record<string, Partial<CastMember>>>('cast'),
         loadPref<Record<string, string>>('text'), loadPref<Settings>('settings'),
       ]);
+      const md = await loadPref<'story' | 'lines'>('mode');
+      if (md) setMode(md);
       setTakes(t);
       if (s?.lines?.length) setScript(s);
       if (c) setCastEdits(c);
@@ -49,6 +53,7 @@ export default function App() {
   useEffect(() => { if (ready) void savePref('cast', castEdits); }, [castEdits, ready]);
   useEffect(() => { if (ready) void savePref('text', textEdits); }, [textEdits, ready]);
   useEffect(() => { if (ready) void savePref('settings', settings); }, [settings, ready]);
+  useEffect(() => { if (ready) void savePref('mode', mode); }, [mode, ready]);
 
   const cast = useCallback((k: string): CastMember => {
     const base = script.cast[k] ?? { name: k, voice: 'Charon', style: '' };
@@ -148,7 +153,11 @@ export default function App() {
       <header className="top">
         <div className="brand">
           <div className="title">Odyssey Quest · студия озвучки</div>
-          <div className="muted">Глава 1 · {script.lines.length} реплик · готово {doneCount} из {script.lines.length * langs.length}</div>
+          <div className="seg mode">
+            <button className={mode === 'story' ? 'on' : ''} onClick={() => setMode('story')}>Рассказчик</button>
+            <button className={mode === 'lines' ? 'on' : ''} onClick={() => setMode('lines')}>Реплики</button>
+          </div>
+          {mode === 'lines' && <div className="muted">Глава 1 · {script.lines.length} реплик · готово {doneCount} из {script.lines.length * langs.length}</div>}
         </div>
         <div className="controls">
           <label>Модель
@@ -164,6 +173,7 @@ export default function App() {
           <label>Пауза, с
             <input type="number" min={0} max={30} step={0.5} value={settings.gapMs / 1000} onChange={(e) => setSettings({ ...settings, gapMs: Math.max(0, +e.target.value * 1000) })} />
           </label>
+          {mode === 'lines' && <>
           <div className="seg">
             {(['ru', 'en', 'both'] as const).map((g) => (
               <button key={g} className={settings.lang === g ? 'on' : ''} onClick={() => setSettings({ ...settings, lang: g })}>{g === 'both' ? 'RU+EN' : g.toUpperCase()}</button>
@@ -176,9 +186,11 @@ export default function App() {
           )}
           <button className="btn" disabled={!takes.size} onClick={exportZip}>⤓ Скачать всё (zip)</button>
           <label className="btn file">Открыть JSON<input type="file" accept=".json" onChange={(e) => e.target.files?.[0] && openJson(e.target.files[0])} /></label>
+          </>}
         </div>
       </header>
 
+      {mode === 'story' ? <NarrationView settings={settings} takes={takes} setTakes={setTakes} /> : (
       <div className="body">
         <aside className="side">
           <div className="filters">
@@ -217,6 +229,7 @@ export default function App() {
           </main>
         )}
       </div>
+      )}
     </div>
   );
 }
