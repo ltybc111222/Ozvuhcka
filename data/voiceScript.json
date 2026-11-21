@@ -1,0 +1,524 @@
+{
+ "cast": {
+  "sam": {
+   "name": "Сэм",
+   "voice": "Algenib",
+   "style": "Мужчина 35–40, усталый солдат, хрипловатый, говорит коротко и спокойно, сухая ирония. Тот же голос, что в интро."
+  },
+  "corvin": {
+   "name": "Корвин",
+   "voice": "Algieba",
+   "style": "Вампир-аристократ, низкий бархатный голос, холодная ирония, говорит тихо и уверенно, никогда не повышает голос. Мысли про себя — почти шёпотом, ближе к микрофону."
+  },
+  "marshal": {
+   "name": "Костяной маршал",
+   "voice": "Orus",
+   "style": "Древний полководец-нежить, очень низкий, гулкий, медленный командный голос, каждое слово как приказ, с металлической тяжестью."
+  },
+  "widow": {
+   "name": "Вдова стеклодува",
+   "voice": "Gacrux",
+   "style": "Зрелая женщина, бархатный ласково-насмешливый голос; во 2-й фазе и в прощании — с трещиной старости."
+  },
+  "mage": {
+   "name": "Маг (муж)",
+   "voice": "Iapetus",
+   "style": "Старый учёный, сухой голос, горькое знание, последний выдох."
+  },
+  "baron": {
+   "name": "Барон (муж)",
+   "voice": "Alnilam",
+   "style": "Рыцарь, твёрдый гордый голос, последние силы, клятва."
+  },
+  "glassblower": {
+   "name": "Стеклодув (муж)",
+   "voice": "Umbriel",
+   "style": "Простой мастеровой, мягкий тёплый голос, нежность и боль."
+  },
+  "abbot": {
+   "name": "Настоятель",
+   "voice": "Sadaltager",
+   "style": "Фанатичный проповедник, пафос с амвона, нарастающее безумие; в фазе 2 — истеричные повторы; в поражении — сломанный шёпот."
+  },
+  "bellringer": {
+   "name": "Звонарь углей",
+   "voice": "Enceladus",
+   "style": "Измученный мужчина в шлеме-колоколе, глухой надтреснутый голос, вина и ярость; в последних словах — крик с колокольни."
+  }
+ },
+ "lines": [
+  {
+   "who": "sam",
+   "folder": "story",
+   "file": "micro_intro",
+   "when": "Микровведение после интро (от первого лица)",
+   "ru": "Разлом выплюнул меня на кладбище… <short pause> Подумал: вот и всё, Сэм. <long pause> Но вошёл не убийца. Гость. <short pause> Он улыбнулся, и я увидел клыки.",
+   "en": "The rift spat me out onto a graveyard… <short pause> I thought: that's it, Sam. <long pause> But it wasn't a killer who came in. A guest. <short pause> He smiled, and I saw the fangs.",
+   "status": "черновик, не утверждён",
+   "path_ru": "ch01/voice/story/micro_intro.ru.ogg",
+   "path_en": "ch01/voice/story/micro_intro.ogg"
+  },
+  {
+   "who": "sam",
+   "folder": "story",
+   "file": "pact_sam",
+   "when": "Пакт: вопрос Сэма",
+   "ru": "Это долго?",
+   "en": "How long is that?",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/story/pact_sam.ru.ogg",
+   "path_en": "ch01/voice/story/pact_sam.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "story",
+   "file": "pact_corvin",
+   "when": "Пакт: ответ вампира",
+   "ru": "Дольше, чем ты ду́маешь.",
+   "en": "Longer than you think.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/story/pact_corvin.ru.ogg",
+   "path_en": "ch01/voice/story/pact_corvin.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "story",
+   "file": "crypt_1",
+   "when": "Ур. 1, арена 1 «Из склепа», игра за Сэма (подпись «Незнакомец»)",
+   "ru": "Выбирайся. Наверху́ мёртвые, держись ближе.",
+   "en": "Get up. The dead are above, stay close.",
+   "status": "черновик Claude",
+   "path_ru": "ch01/voice/story/crypt_1.ru.ogg",
+   "path_en": "ch01/voice/story/crypt_1.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "story",
+   "file": "crypt_2",
+   "when": "Ур. 1, арена 1 «Из склепа», игра за Сэма (подпись «Незнакомец»)",
+   "ru": "Рывок уводит из-под удара.",
+   "en": "Dash to get out of harm's way.",
+   "status": "черновик Claude",
+   "path_ru": "ch01/voice/story/crypt_2.ru.ogg",
+   "path_en": "ch01/voice/story/crypt_2.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "story",
+   "file": "crypt_3",
+   "when": "Ур. 1, арена 1 «Из склепа», игра за Сэма (подпись «Незнакомец»)",
+   "ru": "Стая! Бей в упор.",
+   "en": "A pack! Hit them point-blank.",
+   "status": "черновик Claude",
+   "path_ru": "ch01/voice/story/crypt_3.ru.ogg",
+   "path_en": "ch01/voice/story/crypt_3.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "story",
+   "file": "crypt_4",
+   "when": "Ур. 1, арена 1 «Из склепа», игра за Сэма (подпись «Незнакомец»)",
+   "ru": "Я против Кардина́ла. <short pause> Не все вампиры ему служат. <short pause> У некоторых свои цели.",
+   "en": "I stand against the Cardinal. <short pause> Not every vampire serves him. <short pause> Some of us have our own ends.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/story/crypt_4.ru.ogg",
+   "path_en": "ch01/voice/story/crypt_4.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "story",
+   "file": "crypt_5",
+   "when": "Ур. 1, арена 1 «Из склепа», игра за Сэма (подпись «Незнакомец»)",
+   "ru": "Патруль Ма́ршала! С дороги!",
+   "en": "The Marshal's patrol! Off the road!",
+   "status": "черновик Claude",
+   "path_ru": "ch01/voice/story/crypt_5.ru.ogg",
+   "path_en": "ch01/voice/story/crypt_5.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "story",
+   "file": "crypt_1_c",
+   "when": "Ур. 1, арена 1, игра за Корвина",
+   "ru": "Вставай, человек. Наверху́ мёртвые, держись рядом.",
+   "en": "Get up, human. The dead are above, stay by me.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/story/crypt_1_c.ru.ogg",
+   "path_en": "ch01/voice/story/crypt_1_c.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "story",
+   "file": "crypt_2_c",
+   "when": "Ур. 1, арена 1, игра за Корвина",
+   "ru": "Стая воронов: сквозь них, и с каждого глоток.",
+   "en": "A flock of ravens: through them, and a sip from each.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/story/crypt_2_c.ru.ogg",
+   "path_en": "ch01/voice/story/crypt_2_c.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "story",
+   "file": "crypt_3_c",
+   "when": "Ур. 1, арена 1, игра за Корвина",
+   "ru": "Стая! Держи их, человек, вблизи они мои.",
+   "en": "A pack! Hold them, human, up close they're mine.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/story/crypt_3_c.ru.ogg",
+   "path_en": "ch01/voice/story/crypt_3_c.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "story",
+   "file": "crypt_4_c",
+   "when": "Ур. 1, арена 1, игра за Корвина",
+   "ru": "Я против Кардина́ла. Не все вампиры ему служат.",
+   "en": "I stand against the Cardinal. Not every vampire serves him.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/story/crypt_4_c.ru.ogg",
+   "path_en": "ch01/voice/story/crypt_4_c.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "story",
+   "file": "crypt_4_c_thought",
+   "when": "Ур. 1, арена 1, игра за Корвина (мысль, шёпотом)",
+   "ru": "<exhales> Не Кардинал. <short pause> Носи́тель. <short pause> Тебе это знать незачем.",
+   "en": "<exhales> Not the Cardinal. <short pause> The Bearer. <short pause> You needn't know.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/story/crypt_4_c_thought.ru.ogg",
+   "path_en": "ch01/voice/story/crypt_4_c_thought.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "story",
+   "file": "crypt_5_c",
+   "when": "Ур. 1, арена 1, игра за Корвина",
+   "ru": "Патруль Ма́ршала. <short pause> Я знаю их строй: брешь всегда в крыле.",
+   "en": "The Marshal's patrol. <short pause> I know their order: the gap is always in a wing.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/story/crypt_5_c.ru.ogg",
+   "path_en": "ch01/voice/story/crypt_5_c.ogg"
+  },
+  {
+   "who": "sam",
+   "folder": "story",
+   "file": "cache_q",
+   "when": "Ур. 1, арена 2: вопрос Сэма",
+   "ru": "Откуда ты знаешь, где тайни́к?",
+   "en": "How do you know where the cache is?",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/story/cache_q.ru.ogg",
+   "path_en": "ch01/voice/story/cache_q.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "story",
+   "file": "cache_a",
+   "when": "Ур. 1, арена 2: ответ",
+   "ru": "Слышал.",
+   "en": "I heard.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/story/cache_a.ru.ogg",
+   "path_en": "ch01/voice/story/cache_a.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "story",
+   "file": "cache_a_thought",
+   "when": "Ур. 1, арена 2: мысль (только за Корвина, шёпотом)",
+   "ru": "<exhales> Стоянка моего отряда. <short pause> Он не должен спросить ещё раз.",
+   "en": "<exhales> My squad's camp. <short pause> He mustn't ask again.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/story/cache_a_thought.ru.ogg",
+   "path_en": "ch01/voice/story/cache_a_thought.ogg"
+  },
+  {
+   "who": "marshal",
+   "folder": "bone_marshal",
+   "file": "greet",
+   "when": "Карточка, первая встреча",
+   "ru": "Ты пришёл ко мне с дезерти́ром.",
+   "en": "You come to me with a deserter.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/bone_marshal/greet.ru.ogg",
+   "path_en": "ch01/voice/bone_marshal/greet.ogg"
+  },
+  {
+   "who": "marshal",
+   "folder": "bone_marshal",
+   "file": "phase2",
+   "when": "Стадия 2 «Бессмертные легионы»",
+   "ru": "Мои легио́ны не знают смерти. <short pause> Выстой… и докажи, что достоин пройти.",
+   "en": "My legions do not know death. <short pause> Hold out… and prove you are worthy to pass.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/bone_marshal/phase2.ru.ogg",
+   "path_en": "ch01/voice/bone_marshal/phase2.ogg"
+  },
+  {
+   "who": "marshal",
+   "folder": "bone_marshal",
+   "file": "phase3",
+   "when": "Стадия 3 «Честный бой»",
+   "ru": "Ты выстоял против легиона. <short pause> Теперь против меня. <long pause> Одолей меня честно, и я пропущу.",
+   "en": "You stood against the legion. <short pause> Now stand against me. <long pause> Best me fairly, and I will let you pass.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/bone_marshal/phase3.ru.ogg",
+   "path_en": "ch01/voice/bone_marshal/phase3.ogg"
+  },
+  {
+   "who": "marshal",
+   "folder": "bone_marshal",
+   "file": "farewell",
+   "when": "Уступает (сцена после боя)",
+   "ru": "Город взял не меч. <long pause> Чаща помнит твоих товарищей, дезертир.",
+   "en": "It wasn't a sword that took the city. <long pause> The thicket remembers your comrades, deserter.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/bone_marshal/farewell.ru.ogg",
+   "path_en": "ch01/voice/bone_marshal/farewell.ogg"
+  },
+  {
+   "who": "abbot",
+   "folder": "abyss_abbess",
+   "file": "abbot_greet",
+   "when": "Появление",
+   "ru": "Ещё один еретик пришёл к святыне. <short pause> Преклони колени, и дух будет ми́лостив.",
+   "en": "Another heretic has come to the shrine. <short pause> Kneel, and the spirit will be merciful.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/abyss_abbess/abbot_greet.ru.ogg",
+   "path_en": "ch01/voice/abyss_abbess/abbot_greet.ogg"
+  },
+  {
+   "who": "abbot",
+   "folder": "abyss_abbess",
+   "file": "abbot_phase1",
+   "when": "Фаза 1 (о телах в воде)",
+   "ru": "Они тоже сомневались. <short pause> Теперь они молятся в тишине.",
+   "en": "They doubted too. <short pause> Now they pray in silence.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/abyss_abbess/abbot_phase1.ru.ogg",
+   "path_en": "ch01/voice/abyss_abbess/abbot_phase1.ogg"
+  },
+  {
+   "who": "abbot",
+   "folder": "abyss_abbess",
+   "file": "abbot_phase2",
+   "when": "Переход 1→2",
+   "ru": "Мне обещали вечность. <short pause> И я принял её. <short pause> Смотри, как прекрасен дар!",
+   "en": "I was promised eternity. <short pause> And I accepted it. <short pause> See how beautiful the gift is!",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/abyss_abbess/abbot_phase2.ru.ogg",
+   "path_en": "ch01/voice/abyss_abbess/abbot_phase2.ogg"
+  },
+  {
+   "who": "abbot",
+   "folder": "abyss_abbess",
+   "file": "abbot_mad1",
+   "when": "Фаза 2, самообман",
+   "ru": "Вода чиста. Чиста! <short pause> Это ваши глаза лгут!",
+   "en": "The water is pure. Pure! <short pause> It's your eyes that lie!",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/abyss_abbess/abbot_mad1.ru.ogg",
+   "path_en": "ch01/voice/abyss_abbess/abbot_mad1.ogg"
+  },
+  {
+   "who": "abbot",
+   "folder": "abyss_abbess",
+   "file": "abbot_mad2",
+   "when": "Фаза 2, самообман",
+   "ru": "Я не предавал. <short pause> Я спас её от слабых.",
+   "en": "I betrayed no one. <short pause> I saved her from the weak.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/abyss_abbess/abbot_mad2.ru.ogg",
+   "path_en": "ch01/voice/abyss_abbess/abbot_mad2.ogg"
+  },
+  {
+   "who": "abbot",
+   "folder": "abyss_abbess",
+   "file": "abbot_defeat",
+   "when": "Поражение (трещина в лжи)",
+   "ru": "Они звали её каждую ночь… <long pause> а я держал дверь закрытой.",
+   "en": "They called for her every night… <long pause> and I kept the door shut.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/abyss_abbess/abbot_defeat.ru.ogg",
+   "path_en": "ch01/voice/abyss_abbess/abbot_defeat.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "abyss_abbess",
+   "file": "corvin_abbot",
+   "when": "Реплика Корвина Настоятелю (возможная)",
+   "ru": "Тебя купили дёшево, святой отец.",
+   "en": "They bought you cheap, holy father.",
+   "status": "вариант, не закреплён",
+   "path_ru": "ch01/voice/abyss_abbess/corvin_abbot.ru.ogg",
+   "path_en": "ch01/voice/abyss_abbess/corvin_abbot.ogg"
+  },
+  {
+   "who": "widow",
+   "folder": "glassblower_widow",
+   "file": "greet",
+   "when": "Карточка, первая встреча",
+   "ru": "Ещё один жених? Как мило. Подойди ближе, милый.",
+   "en": "Another suitor? How sweet. Come closer, darling.",
+   "status": "уже озвучено — перезаписать только при смене голоса",
+   "path_ru": "ch01/voice/glassblower_widow/greet.ru.ogg",
+   "path_en": "ch01/voice/glassblower_widow/greet.ogg"
+  },
+  {
+   "who": "widow",
+   "folder": "glassblower_widow",
+   "file": "rematch",
+   "when": "Реванш",
+   "ru": "Снова ты? Я берегла твоё место.",
+   "en": "You again? I kept your seat warm.",
+   "status": "уже озвучено — перезаписать только при смене голоса",
+   "path_ru": "ch01/voice/glassblower_widow/rematch.ru.ogg",
+   "path_en": "ch01/voice/glassblower_widow/rematch.ogg"
+  },
+  {
+   "who": "widow",
+   "folder": "glassblower_widow",
+   "file": "phase2",
+   "when": "Фаза 2 «Свадьба в самом разгаре»",
+   "ru": "Мужья мои… встаньте. Гость уходит слишком рано.",
+   "en": "My husbands... rise. Our guest is leaving too soon.",
+   "status": "уже озвучено — перезаписать только при смене голоса",
+   "path_ru": "ch01/voice/glassblower_widow/phase2.ru.ogg",
+   "path_en": "ch01/voice/glassblower_widow/phase2.ogg"
+  },
+  {
+   "who": "widow",
+   "folder": "glassblower_widow",
+   "file": "farewell",
+   "when": "Смерть",
+   "ru": "Разбив однажды… больше не собрать.",
+   "en": "Once shattered... never whole again.",
+   "status": "уже озвучено — перезаписать только при смене голоса",
+   "path_ru": "ch01/voice/glassblower_widow/farewell.ru.ogg",
+   "path_en": "ch01/voice/glassblower_widow/farewell.ogg"
+  },
+  {
+   "who": "mage",
+   "folder": "glassblower_widow",
+   "file": "husband_mage",
+   "when": "Падение мага",
+   "ru": "Ты выучила ритуал… но не цену.",
+   "en": "You learned the ritual... never the price.",
+   "status": "уже озвучено — перезаписать только при смене голоса",
+   "path_ru": "ch01/voice/glassblower_widow/husband_mage.ru.ogg",
+   "path_en": "ch01/voice/glassblower_widow/husband_mage.ogg"
+  },
+  {
+   "who": "baron",
+   "folder": "glassblower_widow",
+   "file": "husband_baron",
+   "when": "Падение барона",
+   "ru": "И мёртвым… я держу клятву.",
+   "en": "Even dead... I keep my vow.",
+   "status": "уже озвучено — перезаписать только при смене голоса",
+   "path_ru": "ch01/voice/glassblower_widow/husband_baron.ru.ogg",
+   "path_en": "ch01/voice/glassblower_widow/husband_baron.ogg"
+  },
+  {
+   "who": "glassblower",
+   "folder": "glassblower_widow",
+   "file": "husband_glassblower",
+   "when": "Падение стеклодува",
+   "ru": "Береги цветок… он хрупкий.",
+   "en": "Mind the flower... it breaks.",
+   "status": "уже озвучено — перезаписать только при смене голоса",
+   "path_ru": "ch01/voice/glassblower_widow/husband_glassblower.ru.ogg",
+   "path_en": "ch01/voice/glassblower_widow/husband_glassblower.ogg"
+  },
+  {
+   "who": "sam",
+   "folder": "glassblower_widow",
+   "file": "hero_commando",
+   "when": "Послесловие, Сэм",
+   "ru": "Три свадьбы. Три могилы. Четвёртой не будет.",
+   "en": "Three weddings. Three graves. There won't be a fourth.",
+   "status": "уже озвучено — перезаписать только при смене голоса",
+   "path_ru": "ch01/voice/glassblower_widow/hero_commando.ru.ogg",
+   "path_en": "ch01/voice/glassblower_widow/hero_commando.ogg"
+  },
+  {
+   "who": "corvin",
+   "folder": "glassblower_widow",
+   "file": "hero_vampire",
+   "when": "Послесловие, Корвин",
+   "ru": "Молодость за чужую кровь. Я знаю эту цену.",
+   "en": "Youth bought with someone else's blood. I know that price.",
+   "status": "уже озвучено — перезаписать только при смене голоса",
+   "path_ru": "ch01/voice/glassblower_widow/hero_vampire.ru.ogg",
+   "path_en": "ch01/voice/glassblower_widow/hero_vampire.ogg"
+  },
+  {
+   "who": "bellringer",
+   "folder": "ember_bellringer",
+   "file": "greet",
+   "when": "Появление",
+   "ru": "Я видел тебя в отражении. <short pause> Ты пришёл, чтобы забрать осколки моей надежды.",
+   "en": "I saw you in the reflection. <short pause> You came to take the shards of my hope.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/ember_bellringer/greet.ru.ogg",
+   "path_en": "ch01/voice/ember_bellringer/greet.ogg"
+  },
+  {
+   "who": "bellringer",
+   "folder": "ember_bellringer",
+   "file": "fight1",
+   "when": "Бой",
+   "ru": "Однажды я уже потерял свой город. <short pause> Второй раз не потеряю!",
+   "en": "Once I already lost my city. <short pause> I won't lose it twice!",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/ember_bellringer/fight1.ru.ogg",
+   "path_en": "ch01/voice/ember_bellringer/fight1.ogg"
+  },
+  {
+   "who": "bellringer",
+   "folder": "ember_bellringer",
+   "file": "fight2",
+   "when": "Бой",
+   "ru": "Каждый удар — за тех, кто не проснулся.",
+   "en": "Every blow is for those who never woke.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/ember_bellringer/fight2.ru.ogg",
+   "path_en": "ch01/voice/ember_bellringer/fight2.ogg"
+  },
+  {
+   "who": "bellringer",
+   "folder": "ember_bellringer",
+   "file": "farewell",
+   "when": "Поражение (выживает)",
+   "ru": "Ты не убивал её… <short pause> Он показал мне не всё. <short pause> Хранитель!",
+   "en": "You didn't kill her… <short pause> He didn't show me everything. <short pause> The Keeper!",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/ember_bellringer/farewell.ru.ogg",
+   "path_en": "ch01/voice/ember_bellringer/farewell.ogg"
+  },
+  {
+   "who": "bellringer",
+   "folder": "ember_bellringer",
+   "file": "alarm",
+   "when": "Набат после боя",
+   "ru": "Пусть теперь звонит правда.",
+   "en": "Let the truth ring now.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/ember_bellringer/alarm.ru.ogg",
+   "path_en": "ch01/voice/ember_bellringer/alarm.ogg"
+  },
+  {
+   "who": "bellringer",
+   "folder": "story",
+   "file": "bellringer_last",
+   "when": "Сцена очистки между ур. 8 и 9: последние слова, крик с колокольни",
+   "ru": "В ту ночь я звонил ложь. <short pause> Сегодня звоню правду. <long pause> Этого хватит.",
+   "en": "That night I rang a lie. <short pause> Today I ring the truth. <long pause> That will be enough.",
+   "status": "утверждено",
+   "path_ru": "ch01/voice/story/bellringer_last.ru.ogg",
+   "path_en": "ch01/voice/story/bellringer_last.ogg"
+  }
+ ]
+}

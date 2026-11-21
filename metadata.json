@@ -1,0 +1,5 @@
+{
+  "name": "Odyssey Quest — студия озвучки",
+  "description": "Озвучка сценария главы 1 Odyssey Quest через Gemini TTS: свой голос на персонажа, очередь, выгрузка WAV с путями игры.",
+  "requestFramePermissions": []
+}

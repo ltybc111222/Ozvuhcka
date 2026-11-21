@@ -1,11 +1,17 @@
-<div align="center">
+# Odyssey Quest — студия озвучки
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+Озвучка сценария главы 1 через Gemini TTS (`gemini-3.8-flash-tts`). Сценарий — `data/voiceScript.json`
+(персонажи с голосами и инструкциями стиля, 43 реплики RU и EN, пути файлов игры).
 
-  <h1>Built with AI Studio</h2>
+## Как пользоваться
+1. Открыть в Google AI Studio (Build → импорт из GitHub) — ключ Gemini подставится сам.
+   Локально: `npm i`, создать `.env.local` с `GEMINI_API_KEY=...`, `npm run dev`.
+2. Слева реплики по папкам; точки — RU/EN: серая нет записи, зелёная готово, жёлтая устарело
+   (поменяли текст, голос или стиль), красная ошибка.
+3. Голос и инструкция стиля — общие для персонажа. Текст правится прямо в карточке,
+   метки `<short pause>`, `<long pause>`, `<sigh>`, `<exhales>` и знак ударения — кнопками.
+4. «Озвучить недостающее» — очередь по фильтру, пауза между запросами, два повтора на ошибке.
+5. «Скачать всё (zip)» — WAV 24 кГц с путями игры (`ch01/voice/<папка>/<файл>[.ru].wav`) и `manifest.json`.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
-
-  <a href="https://aistudio.google.com/apps">Start building</a>
-
-</div>
+Записи и правки хранятся в браузере (IndexedDB) и не пропадают при перезагрузке.
+Новый сценарий — кнопка «Открыть JSON».
