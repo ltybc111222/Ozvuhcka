@@ -2,9 +2,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import JSZip from 'jszip';
 import embedded from './data/voiceScript.json';
 import { VOICES, takeKey, type CastMember, type Lang, type ScriptLine, type Settings, type Take, type TakeKey, type VoiceScript } from './types';
-import { explain, synthesize } from './services/tts';
-import { dropTake, loadPref, loadTakes, savePref, saveTake } from './services/store';
-import { b64ToBytes, download, formatDuration, pcmToWav } from './utils/wav';
+import { dailyQuota, explain, synthesize } from './services/tts';
+import { commitTake, dropTake, loadPref, loadTakes, savePref } from './services/store';
+import { download } from './utils/wav';
+import { TakeHistory, TakePlayer, mastered, wavOf } from './Takes';
 import NarrationView from './Narration';
 
 const TAGS = ['<short pause>', '<long pause>', '<sigh>', '<exhales>'];
@@ -12,6 +13,12 @@ const ACUTE = '́';
 const DEFAULTS: Settings = { model: 'gemini-3.8-flash-tts', temperature: 1, gapMs: 1500, lang: 'both' };
 type LineState = 'none' | 'ready' | 'stale' | 'busy' | 'error';
 const lineId = (l: ScriptLine) => `${l.folder}/${l.file}`;
+/** Нормы длины из README «Озвучка» game-sod (реплики боссов), с. */
+const LIMITS: [RegExp, [number, number]][] = [
+  [/^greet$/, [2, 4]], [/^rematch$/, [1.5, 3]], [/^phase\d$/, [2, 4]], [/^farewell$/, [0.5, 3]],
+  [/^hero_/, [2, 4]], [/^husband_/, [2, 4]],
+];
+const limitOf = (l: ScriptLine) => (l.folder === 'story' ? undefined : LIMITS.find(([r]) => r.test(l.file))?.[1]);
 const sleep = (ms: number, s?: AbortSignal) => new Promise<void>((ok, no) => {
   const t = setTimeout(ok, ms);
   s?.addEventListener('abort', () => { clearTimeout(t); no(new Error('abort')); }, { once: true });
@@ -30,6 +37,8 @@ export default function App() {
   const [onlyMissing, setOnlyMissing] = useState(false);
   const [queue, setQueue] = useState<{ done: number; total: number } | null>(null);
   const abort = useRef<AbortController | null>(null);
+  const takesRef = useRef(takes);
+  takesRef.current = takes;
   const [ready, setReady] = useState(false);
   const [mode, setMode] = useState<'story' | 'lines'>('story');
 
@@ -85,7 +94,7 @@ export default function App() {
     setErrors((m) => { const n = new Map(m); n.delete(k); return n; });
     try {
       const take = await synthesize({ text: textOf(l, lang), style: c.style, voice: c.voice, model: settings.model, temperature: settings.temperature, lang }, signal);
-      await saveTake(k, take);
+      await commitTake(k, take, takesRef.current.get(k));
       setTakes((m) => new Map(m).set(k, take));
     } catch (e) {
       setErrors((m) => new Map(m).set(k, explain(e)));
@@ -106,7 +115,7 @@ export default function App() {
         const [l, g] = jobs[i];
         for (let attempt = 0; ; attempt++) {
           try { await generate(l, g, ac.signal); break; } catch (e) {
-            if (ac.signal.aborted) throw e;
+            if (ac.signal.aborted || dailyQuota(e)) throw e;
             if (attempt >= 2) break;
             await sleep(3000 * (attempt + 1), ac.signal);
           }
@@ -126,8 +135,9 @@ export default function App() {
       const t = takes.get(takeKey(l, g));
       if (!t) continue;
       const path = (g === 'ru' ? l.path_ru : l.path_en).replace(/\.ogg$/, '.wav');
-      zip.file(path, pcmToWav(b64ToBytes(t.pcm), t.rate));
-      manifest.push({ path, who: cast(l.who).name, lang: g, voice: t.voice, model: t.model, temperature: t.temperature, durationSec: +t.durationSec.toFixed(2), text: t.text, style: t.style });
+      const m = mastered(t);
+      zip.file(path, wavOf(t));
+      manifest.push({ path, who: cast(l.who).name, lang: g, status: l.status, voice: t.voice, model: t.model, temperature: t.temperature, durationSec: +m.durationSec.toFixed(2), lufs: m.lufs, peakDb: m.peakDb, text: t.text, style: t.style });
     }
     zip.file('manifest.json', JSON.stringify(manifest, null, 1));
     download(await zip.generateAsync({ type: 'blob' }), 'odyssey-voice-ch1.zip');
@@ -220,10 +230,11 @@ export default function App() {
             <CastPanel k={current.who} c={cast(current.who)} onChange={(p) => setCastEdits((m) => ({ ...m, [current.who]: { ...m[current.who], ...p } }))} />
             {langs.map((g) => (
               <TakeCard key={g} line={current} lang={g} text={textOf(current, g)} state={stateOf(current, g)}
-                take={takes.get(takeKey(current, g))} error={errors.get(takeKey(current, g))} locked={!!queue}
+                take={takes.get(takeKey(current, g))} limit={limitOf(current)} error={errors.get(takeKey(current, g))} locked={!!queue}
                 onText={(t) => setTextEdits((m) => ({ ...m, [takeKey(current, g)]: t }))}
                 onReset={() => setTextEdits((m) => { const n = { ...m }; delete n[takeKey(current, g)]; return n; })}
                 onGenerate={() => generate(current, g).catch(() => {})}
+                onPick={(t) => setTakes((m) => new Map(m).set(takeKey(current, g), t))}
                 onDrop={async () => { await dropTake(takeKey(current, g)); setTakes((m) => { const n = new Map(m); n.delete(takeKey(current, g)); return n; }); }} />
             ))}
           </main>
@@ -253,12 +264,10 @@ function CastPanel({ k, c, onChange }: { k: string; c: CastMember; onChange: (p:
 }
 
 function TakeCard(p: {
-  line: ScriptLine; lang: Lang; text: string; state: LineState; take?: Take; error?: string; locked: boolean;
-  onText: (t: string) => void; onReset: () => void; onGenerate: () => void; onDrop: () => void;
+  line: ScriptLine; lang: Lang; text: string; state: LineState; take?: Take; error?: string; locked: boolean; limit?: [number, number];
+  onText: (t: string) => void; onReset: () => void; onGenerate: () => void; onDrop: () => void; onPick: (t: Take) => void;
 }) {
   const ref = useRef<HTMLTextAreaElement | null>(null);
-  const url = useMemo(() => p.take ? URL.createObjectURL(pcmToWav(b64ToBytes(p.take.pcm), p.take.rate)) : '', [p.take]);
-  useEffect(() => () => { if (url) URL.revokeObjectURL(url); }, [url]);
   const insert = (s: string) => {
     const el = ref.current; if (!el) return;
     const a = el.selectionStart ?? p.text.length, b = el.selectionEnd ?? a;
@@ -282,14 +291,11 @@ function TakeCard(p: {
       <textarea ref={ref} rows={3} className="script" value={p.text} onChange={(e) => p.onText(e.target.value)} />
       {p.error && <div className="err">{p.error}</div>}
       <div className="row2">
-        <button className="btn primary" disabled={p.state === 'busy' || p.locked || !p.text.trim()} onClick={p.onGenerate}>{p.take ? '↻ Перезаписать' : '🎙 Озвучить'}</button>
-        {p.take && <>
-          <audio controls src={url} />
-          <span className="muted small">{formatDuration(p.take.durationSec)} · {p.take.voice} · {p.take.model}</span>
-          <button className="btn" onClick={() => download(pcmToWav(b64ToBytes(p.take!.pcm), p.take!.rate), path.split('/').pop()!)}>⤓ WAV</button>
-          <button className="btn ghost" onClick={p.onDrop}>✕</button>
-        </>}
+        <button className="btn primary" disabled={p.state === 'busy' || p.locked || !p.text.trim()} onClick={p.onGenerate}>{p.take ? '↻ Ещё дубль' : '🎙 Озвучить'}</button>
+        {p.take && <button className="btn ghost" title="Удалить выбранный дубль" onClick={p.onDrop}>✕</button>}
       </div>
+      {p.take && <TakePlayer take={p.take} file={path.split('/').pop()!} limit={p.limit} />}
+      <TakeHistory k={takeKey(p.line, p.lang)} take={p.take} onPick={p.onPick} />
     </section>
   );
 }

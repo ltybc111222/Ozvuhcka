@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:mac": "GEMINI_API_KEY=\"$(security find-generic-password -s gemini-api-key -w)\" vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview"
   },
