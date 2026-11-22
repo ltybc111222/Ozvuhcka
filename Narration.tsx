@@ -2,9 +2,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import JSZip from 'jszip';
 import embedded from './data/narration.json';
 import { VOICES, fragKey, type CastMember, type Fragment, type Narration as Story, type Settings, type Take, type TakeKey } from './types';
-import { explain, synthesize } from './services/tts';
-import { dropTake, loadPref, savePref, saveTake } from './services/store';
+import { dailyQuota, explain, synthesize } from './services/tts';
+import { commitTake, dropTake, loadPref, savePref } from './services/store';
 import { b64ToBytes, download, formatDuration, pcmToWav } from './utils/wav';
+import { TakeHistory, TakePlayer, mastered, wavOf } from './Takes';
 
 const TAGS = ['<short pause>', '<long pause>', '<sigh>', '<exhales>'];
 const ACUTE = '́';
@@ -33,6 +34,8 @@ export default function NarrationView({ settings, takes, setTakes }: Props) {
   const [queue, setQueue] = useState<{ done: number; total: number } | null>(null);
   const [ready, setReady] = useState(false);
   const abort = useRef<AbortController | null>(null);
+  const takesRef = useRef(takes);
+  takesRef.current = takes;
 
   useEffect(() => {
     (async () => {
@@ -64,7 +67,7 @@ export default function NarrationView({ settings, takes, setTakes }: Props) {
     setErrors((m) => { const n = new Map(m); n.delete(f.id); return n; });
     try {
       const take = await synthesize({ text: textOf(f), style: narrator.style, voice: narrator.voice, model: settings.model, temperature: settings.temperature, lang: 'ru' }, signal);
-      await saveTake(fragKey(f), take);
+      await commitTake(fragKey(f), take, takesRef.current.get(fragKey(f)));
       setTakes((m) => new Map(m).set(fragKey(f), take));
     } catch (e) {
       setErrors((m) => new Map(m).set(f.id, explain(e)));
@@ -83,7 +86,7 @@ export default function NarrationView({ settings, takes, setTakes }: Props) {
       for (let i = 0; i < jobs.length; i++) {
         for (let attempt = 0; ; attempt++) {
           try { await generate(jobs[i], ac.signal); break; } catch (e) {
-            if (ac.signal.aborted) throw e;
+            if (ac.signal.aborted || dailyQuota(e)) throw e;
             if (attempt >= 2) break;
             await sleep(3000 * (attempt + 1), ac.signal);
           }
@@ -100,8 +103,9 @@ export default function NarrationView({ settings, takes, setTakes }: Props) {
     const zip = new JSZip();
     const manifest = recorded.map((f) => {
       const t = takes.get(fragKey(f))!;
-      zip.file(fileOf(f), pcmToWav(b64ToBytes(t.pcm), t.rate));
-      return { file: fileOf(f), title: f.title, voice: t.voice, model: t.model, temperature: t.temperature, durationSec: +t.durationSec.toFixed(2), text: t.text, style: t.style };
+      const m = mastered(t);
+      zip.file(fileOf(f), wavOf(t));
+      return { file: fileOf(f), title: f.title, voice: t.voice, model: t.model, temperature: t.temperature, durationSec: +m.durationSec.toFixed(2), lufs: m.lufs, peakDb: m.peakDb, text: t.text, style: t.style };
     });
     zip.file('manifest.json', JSON.stringify(manifest, null, 1));
     download(await zip.generateAsync({ type: 'blob' }), 'odyssey-story-ch1.zip');
@@ -113,7 +117,7 @@ export default function NarrationView({ settings, takes, setTakes }: Props) {
     const rate = parts[0].rate;
     if (parts.some((p) => p.rate !== rate)) { alert('Фрагменты записаны с разной частотой, склеить нельзя.'); return; }
     const gap = new Uint8Array(Math.round(JOIN_GAP * rate) * 2);
-    const chunks = parts.flatMap((p, i) => (i ? [gap, b64ToBytes(p.pcm)] : [b64ToBytes(p.pcm)]));
+    const chunks = parts.flatMap((p, i) => (i ? [gap, mastered(p).pcm] : [mastered(p).pcm]));
     const out = new Uint8Array(chunks.reduce((n, c) => n + c.length, 0));
     let o = 0; for (const c of chunks) { out.set(c, o); o += c.length; }
     download(pcmToWav(out, rate), 'odyssey-story-ch1-full.wav');
@@ -162,6 +166,7 @@ export default function NarrationView({ settings, takes, setTakes }: Props) {
           onText={(t) => setTexts((m) => ({ ...m, [cur.id]: t }))}
           onReset={() => setTexts((m) => { const n = { ...m }; delete n[cur.id]; return n; })}
           onGenerate={() => generate(cur).catch(() => {})}
+          onPick={(t) => setTakes((m) => new Map(m).set(fragKey(cur), t))}
           onDrop={async () => { await dropTake(fragKey(cur)); setTakes((m) => { const n = new Map(m); n.delete(fragKey(cur)); return n; }); }} />
       </main>
     </div>
@@ -170,11 +175,9 @@ export default function NarrationView({ settings, takes, setTakes }: Props) {
 
 function FragmentCard(p: {
   f: Fragment; text: string; state: State; take?: Take; error?: string; locked: boolean; file: string;
-  onText: (t: string) => void; onReset: () => void; onGenerate: () => void; onDrop: () => void;
+  onText: (t: string) => void; onReset: () => void; onGenerate: () => void; onDrop: () => void; onPick: (t: Take) => void;
 }) {
   const ref = useRef<HTMLTextAreaElement | null>(null);
-  const url = useMemo(() => p.take ? URL.createObjectURL(pcmToWav(b64ToBytes(p.take.pcm), p.take.rate)) : '', [p.take]);
-  useEffect(() => () => { if (url) URL.revokeObjectURL(url); }, [url]);
   const insert = (s: string) => {
     const el = ref.current; if (!el) return;
     const a = el.selectionStart ?? p.text.length, b = el.selectionEnd ?? a;
@@ -196,14 +199,11 @@ function FragmentCard(p: {
       <textarea ref={ref} rows={18} className="script" value={p.text} onChange={(e) => p.onText(e.target.value)} />
       {p.error && <div className="err">{p.error}</div>}
       <div className="row2">
-        <button className="btn primary" disabled={p.state === 'busy' || p.locked || !p.text.trim()} onClick={p.onGenerate}>{p.take ? '↻ Перезаписать' : '🎙 Озвучить'}</button>
-        {p.take && <>
-          <audio controls src={url} />
-          <span className="muted small">{formatDuration(p.take.durationSec)} · {p.take.voice} · {p.take.model}</span>
-          <button className="btn" onClick={() => download(pcmToWav(b64ToBytes(p.take!.pcm), p.take!.rate), p.file)}>⤓ WAV</button>
-          <button className="btn ghost" onClick={p.onDrop}>✕</button>
-        </>}
+        <button className="btn primary" disabled={p.state === 'busy' || p.locked || !p.text.trim()} onClick={p.onGenerate}>{p.take ? '↻ Ещё дубль' : '🎙 Озвучить'}</button>
+        {p.take && <button className="btn ghost" title="Удалить выбранный дубль" onClick={p.onDrop}>✕</button>}
       </div>
+      {p.take && <TakePlayer take={p.take} file={p.file} />}
+      <TakeHistory k={fragKey(p.f)} take={p.take} onPick={p.onPick} />
     </section>
   );
 }

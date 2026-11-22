@@ -54,3 +54,9 @@ label { display: flex; flex-direction: column; gap: 4px; color: var(--mut); font
 audio { height: 34px; }
 @media (max-width: 800px) { .body { flex-direction: column; } .side { width: auto; max-height: 40vh; border-right: 0; border-bottom: 1px solid var(--line); } .main { padding: 16px; } }
 .seg.mode { margin-top: 6px; width: fit-content; }
+.player { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-top: 10px; }
+.player audio { height: 34px; }
+.history { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--line); display: flex; flex-direction: column; gap: 4px; }
+.hrow { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.hrow .btn { padding: 4px 10px; }
+.history audio { height: 30px; margin-top: 4px; }
